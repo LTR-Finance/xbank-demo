@@ -191,7 +191,7 @@ def build_explanation(decision, factor_df):
     if decision == "通过":
         opening = "您的本次贷款申请已通过系统评估。"
     elif decision == "人工复核":
-        opening = "您的本次申请目前进入人工复核环节，并非直接拒绝。"
+        opening = "您的本次申请目前进入人工复核环节。"
     else:
         opening = "很遗憾，您的本次申请暂未通过自动审批。"
 
@@ -320,9 +320,9 @@ with left:
 with right:
     if not st.session_state.has_result:
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="step-title">Step 2 · 等待现场生成</div>', unsafe_allow_html=True)
+        st.markdown('<div class="step-title">Step 2 · 等待生成</div>', unsafe_allow_html=True)
         st.subheader("请先在左侧输入客户信息")
-        st.info("点击“生成白盒化审批结果”后，这里会现场出现审批结果、因子贡献图、客户解释信和审计留痕按钮。")
+        st.info("点击“生成白盒化审批结果”后，此处显示现审批结果、因子贡献图、客户解释信和审计留痕按钮。")
         st.markdown("</div>", unsafe_allow_html=True)
 
     else:
