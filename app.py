@@ -140,7 +140,7 @@ def clamp(x, low, high):
 
 def score_application(income, debt_ratio, tenure, credit_years, inquiries, overdue_count):
     """
-    演示用白盒评分模型：
+    演示用白盒化体系：
     """
 
     base_score = 60
