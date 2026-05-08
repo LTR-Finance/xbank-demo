@@ -561,25 +561,3 @@ with tab_script:
     st.success("一句话收尾：X-Explain 不是让 AI 慢下来，而是让每一次 AI 决策都能被客户理解、被业务执行、被监管解释、被审计追溯。")
     st.markdown("</div>", unsafe_allow_html=True)
 
-        tenure = st.slider("在职时间 (年)", 0, 40, 5)
-        submit_btn = st.button("生成信用评估")
-
-    with col2: # 右侧放结果
-        if submit_btn:
-            # 极简的模拟打分逻辑
-            score = (income * 0.4) - (debt * 0.6) + (tenure * 0.2)
-            
-            if score < -10:
-                st.error("❌ 审批结果：拒绝贷款")
-                
-                # 画一个简单的贡献度图表 (模拟 SHAP)
-                st.markdown("**决策因子特征归因 (黑盒拆解)：**")
-                chart_data = pd.DataFrame(
-                    {"贡献度": [income * 0.4, -(debt * 0.6), tenure * 0.2]}, 
-                    index=["收入正向贡献", "高负债率扣分", "工龄正向贡献"]
-                )
-                st.bar_chart(chart_data)
-                
-                st.info(" **Agent白盒翻译自动生成客户解释信：**\n尊敬的客户您好，很遗憾本次未能通过审批。经评估，您的**现有负债率偏高**是主要原因。建议您在未来半年内适当降低信用卡账单比例后再次申请，我们将期待为您服务。")
-            else:
-                st.success("✅ 审批结果：通过贷款")
