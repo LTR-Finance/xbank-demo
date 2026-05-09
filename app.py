@@ -17,8 +17,15 @@ st.set_page_config(
 st.markdown(
     """
     <style>
+    /* 强制浅色主题下的文字颜色，避免评委电脑/浏览器使用深色主题时出现“白字白底” */
     .stApp {
         background: #F5F7F4;
+        color: #1D2939;
+    }
+
+    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp label,
+    .stApp span, .stApp div, .stApp li {
+        color: #1D2939;
     }
 
     .main-header {
@@ -128,6 +135,38 @@ st.markdown(
         padding: .8rem .95rem;
         box-shadow: 0 6px 18px rgba(16, 24, 40, 0.05);
     }
+
+    .main-header, .main-header *, .audit-box, .audit-box * {
+        color: #FFFFFF !important;
+    }
+
+    .main-header p {
+        color: #DDE8DE !important;
+    }
+
+    .card, .card *, div[data-testid="stMetric"], div[data-testid="stMetric"] * {
+        color: #1D2939 !important;
+    }
+
+    .step-title, .hint, .stCaption, .stCaption * {
+        color: #667085 !important;
+    }
+
+    .explain-box, .explain-box * {
+        color: #344054 !important;
+    }
+
+    .decision-pass, .decision-pass * {
+        color: #027A48 !important;
+    }
+
+    .decision-review, .decision-review * {
+        color: #B54708 !important;
+    }
+
+    .decision-reject, .decision-reject * {
+        color: #B42318 !important;
+    }
     </style>
     """,
     unsafe_allow_html=True,
@@ -140,7 +179,9 @@ def clamp(x, low, high):
 
 def score_application(income, debt_ratio, tenure, credit_years, inquiries, overdue_count):
     """
-    演示用白盒化体系：
+    演示用白盒评分模型：
+    - 不追求真实授信准确性
+    - 目标是展示“每个因子如何影响结果”
     """
 
     base_score = 60
@@ -191,7 +232,7 @@ def build_explanation(decision, factor_df):
     if decision == "通过":
         opening = "您的本次贷款申请已通过系统评估。"
     elif decision == "人工复核":
-        opening = "您的本次申请目前进入人工复核环节。"
+        opening = "您的本次申请目前进入人工复核环节，并非直接拒绝。"
     else:
         opening = "很遗憾，您的本次申请暂未通过自动审批。"
 
@@ -223,6 +264,7 @@ def build_explanation(decision, factor_df):
     return f"""
 尊敬的客户您好，{opening}
 
+本次评估并非只依据一个黑盒分数，而是对影响结果的主要因素进行了拆解。
 
 主要负向因素：{neg_text}。  
 主要正向因素：{pos_text}。
@@ -320,9 +362,9 @@ with left:
 with right:
     if not st.session_state.has_result:
         st.markdown('<div class="card">', unsafe_allow_html=True)
-        st.markdown('<div class="step-title">Step 2 · 等待生成</div>', unsafe_allow_html=True)
+        st.markdown('<div class="step-title">Step 2 · 等待现场生成</div>', unsafe_allow_html=True)
         st.subheader("请先在左侧输入客户信息")
-        st.info("点击“生成白盒化审批结果”后，此处显示现审批结果、因子贡献图、客户解释信和审计留痕按钮。")
+        st.info("点击“生成白盒化审批结果”后，这里会现场出现审批结果、因子贡献图、客户解释信和审计留痕按钮。")
         st.markdown("</div>", unsafe_allow_html=True)
 
     else:
@@ -394,4 +436,6 @@ with right:
             )
 
         st.markdown("</div>", unsafe_allow_html=True)
+
+
 
